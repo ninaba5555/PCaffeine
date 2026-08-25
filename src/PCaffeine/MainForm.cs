@@ -2,22 +2,22 @@ using System.Runtime.InteropServices;
 
 namespace PCaffeine;
 
-public partial class Form1 : Form
+public partial class MainForm : Form
 {
     [DllImport("kernel32.dll")]
     private static extern uint SetThreadExecutionState(uint esFlags);
 
-    private const uint ES_CONTINUOUS = 0x80000000;
-    private const uint ES_SYSTEM_REQUIRED = 0x00000001;
+    private const uint EsContinuous = 0x80000000;
+    private const uint EsSystemRequired = 0x00000001;
 
-    public Form1()
+    public MainForm()
     {
         InitializeComponent();
 
         // PCのスリープを防止
         SetThreadExecutionState(
-            ES_CONTINUOUS |
-            ES_SYSTEM_REQUIRED
+            EsContinuous |
+            EsSystemRequired
         );
 
         // ウィンドウ設定
@@ -64,7 +64,7 @@ public partial class Form1 : Form
     protected override void OnFormClosed(FormClosedEventArgs e)
     {
         // スリープ防止を解除
-        SetThreadExecutionState(ES_CONTINUOUS);
+        SetThreadExecutionState(EsContinuous);
 
         base.OnFormClosed(e);
     }
