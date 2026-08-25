@@ -1,24 +1,13 @@
-using System.Runtime.InteropServices;
-
 namespace PCaffeine;
 
 public partial class MainForm : Form
 {
-    [DllImport("kernel32.dll")]
-    private static extern uint SetThreadExecutionState(uint esFlags);
-
-    private const uint EsContinuous = 0x80000000;
-    private const uint EsSystemRequired = 0x00000001;
-
     public MainForm()
     {
         InitializeComponent();
 
         // PCのスリープを防止
-        SetThreadExecutionState(
-            EsContinuous |
-            EsSystemRequired
-        );
+        SleepManager.PreventSleep();
 
         // ウィンドウ設定
         Text = "PCaffeine";
@@ -64,7 +53,7 @@ public partial class MainForm : Form
     protected override void OnFormClosed(FormClosedEventArgs e)
     {
         // スリープ防止を解除
-        SetThreadExecutionState(EsContinuous);
+        SleepManager.AllowSleep();
 
         base.OnFormClosed(e);
     }
